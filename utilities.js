@@ -1,6 +1,6 @@
 const validators = {
   validateAlphaNumeric: (parameter) => {
-    if (typeof parameter !== 'string' || parameter.replace('/^[A-Za-z0-9]+$/g', '') !== parameter) {
+    if (typeof parameter !== 'string' || !parameter.match(/^[\p{L}\p{N}]*$/u)) {
       throw {code: 400, message: "The exercise name should be alphanumeric."};
     }
   },
