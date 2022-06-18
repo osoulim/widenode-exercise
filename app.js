@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
   extended: false,
 }));
 
-app.get('/devexercise/', exerciseRouter);
+app.use('/devexercise', exerciseRouter);
 
 const port = 3000;
 app.listen(port, () => {
