@@ -7,9 +7,16 @@ const validators = {
 
   validateFromValues: (parameter, values) => {
     if (!values.includes(parameter)) {
-      throw {code:400, message: `The parameter should be one of the ${values.join(", ")}`};
+      throw {code:400, message: `The parameter should be one of the [${values.join(", ")}]`};
     }
   },
+
+  validateUser: (user) => {
+    return user.$type === 'user'
+      && typeof user.id === 'number' && user.id > 0
+      && typeof user.name === 'string' && user.name !== ""
+      && Object.keys(user).length === 3;
+  }
 };
 
 function sendResponse(res, data) {
@@ -24,8 +31,17 @@ function sendError(res, error) {
   res.status(error.code).json({message: error.message});
 }
 
-const dataExtractors = {
-
-};
-
-export {validators, dataExtractors, sendResponse, sendError}
+function userExtractor (data) {
+  if (data === null || typeof data === undefined || typeof data !== 'object') {
+    return [];
+  }
+  if (validators.validateUser(data)) {
+    return [data];
+  }
+  const result = [];
+  for (const key of Object.keys(data)) {
+    result.push(...userExtractor(data[key]));
+  }
+  return result;
+}
+export {validators, userExtractor, sendResponse, sendError}
