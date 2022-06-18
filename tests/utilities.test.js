@@ -36,6 +36,14 @@ it('Should test the user validator with negative id', () => {
     expect(validators.validateUser({$type: "user", id: -1, name: "Mamzi"})).toBe(false);
 });
 
+it('Should test the user validator with float id', () => {
+  expect(validators.validateUser({$type: "user", id: 1.25, name: "Mamzi"})).toBe(false);
+});
+
+it('Should test the user validator with less information', () => {
+  expect(validators.validateUser({$type: "user", id: -1})).toBe(false);
+});
+
 it('Should test the user validator with empty name', () => {
     expect(validators.validateUser({$type: "user", id: 123, name: ""})).toBe(false);
 });
