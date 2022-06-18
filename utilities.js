@@ -13,7 +13,7 @@ const validators = {
 
   validateUser: (user) => {
     return user.$type === 'user'
-      && typeof user.id === 'number' && user.id > 0
+      && Number.isInteger(user.id) && user.id > 0
       && typeof user.name === 'string' && user.name !== ""
       && Object.keys(user).length === 3;
   }
