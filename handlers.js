@@ -8,8 +8,8 @@ router.get('/data/:exerciseName', async (req, res) => {
   try {
     const {exerciseName} = req.params;
     validators.validateAlphaNumeric(exerciseName);
-    const result = await getExercise(exerciseName);
-    sendResponse(res, result.data);
+    const exercise = await getExercise(exerciseName);
+    sendResponse(res, exercise);
   } catch (error) {
     sendError(res, error);
   }
@@ -21,8 +21,8 @@ router.get('/solved/:exerciseName', async (req, res) => {
     const {sort} = req.query;
     validators.validateAlphaNumeric(exerciseName);
     validators.validateFromValues(sort, ["id", "name"]);
-    const result = await getExercise(exerciseName);
-    const users = userExtractor(result.data);
+    const exercise = await getExercise(exerciseName);
+    const users = userExtractor(exercise);
     sendResponse(res, {users: getUniqueUsers(getSortedUsers(users, sort))});
   } catch (error) {
     sendError(res, error);
