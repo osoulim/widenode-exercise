@@ -23,7 +23,7 @@ router.get('/solved/:exerciseName', async (req, res) => {
     validators.validateFromValues(sort, ["id", "name"]);
     const exercise = await getExercise(exerciseName);
     const users = userExtractor(exercise);
-    sendResponse(res, {users: getUniqueUsers(getSortedUsers(users, sort))});
+    sendResponse(res, getUniqueUsers(getSortedUsers(users, sort)));
   } catch (error) {
     sendError(res, error);
   }
