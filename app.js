@@ -1,9 +1,19 @@
-const express = require('express')
-const app = express()
+import express from 'express';
+import bodyParser from 'body-parser';
+import bodyParserJsonError from 'express-body-parser-json-error';
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+import exerciseRouter from './handlers.js';
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParserJsonError());
+app.use(bodyParser.raw());
+app.use(bodyParser.urlencoded({
+  extended: false,
+}));
+
+app.get('/devexercise/', exerciseRouter);
 
 const port = 3000;
 app.listen(port, () => {
