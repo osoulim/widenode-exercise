@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {sendError, sendResponse, userExtractor, validators} from "./utilities.js";
+import {getSortedUsers, getUniqueUsers, sendError, sendResponse, userExtractor, validators} from "./utilities.js";
 import {getExercise} from "./dataaccess.js";
 
 const router = Router();
@@ -22,8 +22,8 @@ router.get('/solved/:exerciseName', async (req, res) => {
     validators.validateAlphaNumeric(exerciseName);
     validators.validateFromValues(sort, ["id", "name"]);
     const result = await getExercise(exerciseName);
-    const users = userExtractor(result.data).sort((a, b) => a[sort] < b[sort] ? -1: 1);
-    sendResponse(res, {users});
+    const users = userExtractor(result.data);
+    sendResponse(res, {users: getUniqueUsers(getSortedUsers(users, sort))});
   } catch (error) {
     sendError(res, error);
   }

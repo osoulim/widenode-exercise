@@ -44,4 +44,19 @@ function userExtractor (data) {
   }
   return result;
 }
-export {validators, userExtractor, sendResponse, sendError}
+
+function getSortedUsers(users, sortField) {
+  return users.sort((a, b) => (a[sortField] < b[sortField]? -1: 1));
+}
+
+function getUniqueUsers(sortedUsers) {
+  const result = [];
+  sortedUsers.forEach(user => {
+    if(result.length === 0 || (result[result.length - 1].id !== user.id && result[result.length - 1].name !== user.name)) {
+      result.push(user);
+    }
+  });
+  return result;
+}
+
+export {validators, userExtractor, sendResponse, sendError, getSortedUsers, getUniqueUsers}
